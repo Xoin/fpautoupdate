@@ -81,6 +81,7 @@ $(function() {
 	var intervalUpdate, isUpdating;
 	var delays = [10, 15, 30, 60];
 	var updateDelay = 0;
+	var endOfPage = false;
 
 	function update(wasAuto) {
 		isUpdating = true;
@@ -115,17 +116,25 @@ $(function() {
 			
 			$('.pagination').html($('.pagination', data).html());
 			
-			if(numnew < 1) {
-				$('#autoupdatetimer a').text('No new posts.');
-				if(wasAuto) {
-					updateDelay = Math.min(updateDelay + 1, delays.length - 1);
+			if($('.pagination span').last().hasClass('selected')) {
+				if(numnew < 1) {
+					$('#autoupdatetimer a').text('No new posts.');
+					if(wasAuto) {
+						updateDelay = Math.min(updateDelay + 1, delays.length - 1);
+					};
+				} else {
+					$('#autoupdatetimer a').text(numnew + ' new post' + (numnew > 1 ? 's' : ''));
+					document.title = title + ' (' + numnew + ')'
+					if(wasAuto) {
+						updateDelay = Math.max(updateDelay - 1, 0);
+					};
 				};
 			} else {
-				$('#autoupdatetimer a').text(numnew + ' new post' + (numnew > 1 ? 's' : ''));
-				document.title = title + ' (' + numnew + ')'
-				if(wasAuto) {
-					updateDelay = Math.max(updateDelay - 1, 0);
-				};
+				wasAuto = false;
+				endOfPage = true;
+				$('#autoupdatetimer').css('display', 'inline');
+				$('#autoupdatetimer a').text('No more posts on this page.');
+				$('#chkautoupdate').attr('disabled', 'disabled');
 			};
 			
 			if(wasAuto) {
@@ -137,7 +146,7 @@ $(function() {
 	};
 	
 	$('#updatemanual').click(function() {
-		if(!isUpdating) {
+		if(!isUpdating && !endOfPage) {
 			$('#autoupdatetimer').css('display', 'inline');
 			$('#autoupdatetimer a').text('Updating...');
 			update(!isNaN(intervalUpdate));
