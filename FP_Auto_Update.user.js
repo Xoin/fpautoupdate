@@ -4,7 +4,7 @@
 // @description w/e
 // @include     http://facepunch.com/showthread.php*
 // @downloadURL http://github.com/PortalGod/fpautoupdate/raw/master/FP_Auto_Update.user.js
-// @version     1
+// @version     1.01
 // ==/UserScript==
 
 $(function() {
@@ -117,7 +117,7 @@ $(function() {
 			
 			$('.pagination').html($('.pagination', data).html());
 			
-			if($('.pagination span').last().hasClass('selected')) {
+			if($('.pagination').length < 1 || $('.pagination span').last().hasClass('selected')) {
 				if(numnew < 1) {
 					$('#autoupdatetimer a').text('No new posts.');
 					if(wasAuto) {
