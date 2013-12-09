@@ -3,6 +3,7 @@
 // @namespace   123
 // @description w/e
 // @include     http://facepunch.com/showthread.php*
+// @downloadURL http://github.com/PortalGod/fpautoupdate/raw/master/FP_Auto_Update.user.js
 // @version     1
 // ==/UserScript==
 
