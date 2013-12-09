@@ -83,6 +83,7 @@ $(function() {
 	var delays = [10, 15, 30, 60];
 	var updateDelay = 0;
 	var endOfPage = false;
+	var threadid = $('#qr_threadid').val();
 
 	function update(wasAuto) {
 		isUpdating = true;
@@ -179,9 +180,18 @@ $(function() {
 			$('#autoupdatetimer').css('display', 'inline');
 			$('#autoupdatetimer a').text(delays[updateDelay]);
 			intervalUpdate = setInterval(updateTimer, 1000);
+			localStorage.setItem(threadid, true);
 		} else {
 			$('#autoupdatetimer').css('display', 'none');
 			intervalUpdate = clearInterval(intervalUpdate);
+			localStorage.removeItem(threadid);
 		};
 	});
+	
+	if(localStorage.getItem(threadid) == "true") {
+		$('#chkautoupdate').attr('checked', 'checked');
+		$('#chkautoupdate').change();
+	} else {
+		$('#chkautoupdate').removeAttr('checked');
+	};
 });
