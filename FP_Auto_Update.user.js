@@ -1,17 +1,18 @@
 // ==UserScript==
 // @name        FP Auto Update
 // @namespace   123
-// @description w/e
+// @description PortalGod work
 // @include     http://facepunch.com/showthread.php*
-// @downloadURL http://github.com/PortalGod/fpautoupdate/raw/master/FP_Auto_Update.user.js
-// @version     1.1
+// @downloadURL https://raw.githubusercontent.com/Xoin/fpautoupdate/master/FP_Auto_Update.user.js
+// @version     1.1.1
 // ==/UserScript==
 
 $(function() {
 	var title = document.title;
 	
 	var s = document.createElement('style');
-	
+	var new_post_total = 0;
+    
 	s.appendChild(document.createTextNode(
 		'.updatemenu {\
 			position:relative;\
@@ -84,7 +85,7 @@ $(function() {
 	var updateDelay = 0;
 	var endOfPage = false;
 	var threadid = $('#qr_threadid').val();
-
+    
 	function update(wasAuto) {
 		isUpdating = true;
 		
@@ -94,7 +95,11 @@ $(function() {
 				max = Math.max(max, parseInt($(this).attr('id').substr(5)));
 				$(this).removeClass('postbitnew').addClass('postbitold');
 				$(this).removeClass('postbitnewline');
-				document.title = title;
+                if (new_post_total>0)
+                {
+                    document.title = "("+new_post_total+") "+title;
+                };
+				
 			});
 			
 			var numnew = 0;
@@ -126,7 +131,8 @@ $(function() {
 					};
 				} else {
 					$('#autoupdatetimer a').text(numnew + ' new post' + (numnew > 1 ? 's' : ''));
-					document.title = title + ' (' + numnew + ')'
+                    new_post_total = new_post_total + numnew; 
+					document.title = '(' + new_post_total + ') ' + title;
 					if(wasAuto) {
 						updateDelay = Math.max(updateDelay - 1, 0);
 					};
@@ -161,7 +167,6 @@ $(function() {
 		if(isUpdating) intervalUpdate = clearInterval(intervalUpdate);
 		var span = $('#autoupdatetimer a');
 		var time = parseInt((span.text().search(/[^\d]/) >= 0 ? '' : span.text()));
-		
 		if(!isNaN(time)) {
 			if(time <= 1) {
 				span.text('Updating...');
@@ -172,6 +177,10 @@ $(function() {
 			};
 		} else {
 			span.text(delays[updateDelay] - 1);
+            $(window).focus(function() {
+            	new_post_total = 0;
+            	document.title = title;
+            });
 		};
 	};	
 	
