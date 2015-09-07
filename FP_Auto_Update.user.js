@@ -3,8 +3,9 @@
 // @namespace   123
 // @description PortalGod work
 // @include     http://facepunch.com/showthread.php*
+// @include     https://facepunch.com/showthread.php*
 // @downloadURL https://raw.githubusercontent.com/Xoin/fpautoupdate/master/FP_Auto_Update.user.js
-// @version     1.1.1
+// @version     1.1.2
 // ==/UserScript==
 
 $(function() {
